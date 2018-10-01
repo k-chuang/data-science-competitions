@@ -4,10 +4,10 @@ A data mining project to develop a predictive model (specifically a k-NN classif
 
 **Note:** This is a graduate assignment for CMPE 255 Data Mining course at SJSU (under Professor David Anastasiu).
 
-## Data Exploration
+## Data Exploration ([notebook](https://github.com/k-chuang/medical-text-classification/blob/master/notebooks/exploratory-data-analysis.ipynb))
 - No null values
 - No redundant rows
-- However, duplicate values in the `Abstract` feature
+- Duplicate values in the `Abstract` feature
     - Same abstracts are classified as different classes
     - Around 6140 rows are duplicated
     - This could either mean that **certain abstracts belong to multiple classes** OR **mislabeled data**
@@ -32,7 +32,7 @@ A data mining project to develop a predictive model (specifically a k-NN classif
     - Abnormal anatomical or physiological conditions and objective or subjective manifestations of disease, not classified as disease or syndrome.
     - e.g. can include any of the above, as well as new diseases/conditions
 
-## Feature Engineering
+## Data Preprocessing
 - **Bag of Words** approach for processing Text
   - BOW approach breaks up the documents into individual words and their counts within the corpus
 - Tokenizer
