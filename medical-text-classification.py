@@ -8,11 +8,6 @@
 #
 # -----------
 
-# ## Import libraries
-
-# In[1]:
-
-
 __author__ = 'Kevin Chuang (https://www.github.com/k-chuang)'
 
 # linear algebra
@@ -29,9 +24,6 @@ from matplotlib import style
 # Text Feature Extraction
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer, ENGLISH_STOP_WORDS
 
-# Feature Selection
-from sklearn.feature_selection import SelectKBest, chi2
-
 # Natural Language Processing
 from nltk import word_tokenize, WordNetLemmatizer
 from nltk.corpus import stopwords
@@ -39,20 +31,20 @@ from nltk.stem import PorterStemmer
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem.lancaster import LancasterStemmer
 
-# Metrics
-from sklearn.metrics import f1_score
-
 # Utilities
 import string
-import math
-from operator import itemgetter
 from collections import Counter, defaultdict
 from scipy.sparse import csr_matrix
 import scipy.sparse as sp
 
+# Load data
 train_df = pd.read_csv('train.dat', sep='\t', header=None, names=['Label', 'Abstract'])
 test_df = pd.read_csv('test.dat', sep='\t', header=None, names=['Abstract'])
 submission_df = pd.read_csv('format.dat', header=None, names=['Labels'])
+
+# Combine train and test abstracts
+print('COMBINING TRAINING SET & TEST SET FOR FEATURE EXTRACTION....')
+abstract_df = pd.concat([train_df['Abstract'], test_df['Abstract']])
 
 
 def lemma_tokenizer(text):
@@ -109,42 +101,33 @@ def tokenizer(text):
     return stems
 
 
-my_stop_words = ['the', 'of', 'and', 'in', 'a', 'with', 'to',
-              'were', 'wa', 'for', 'or', 'is', 'by', 'that',
-              'than', 'from', 'at', 'an', 'this', 'be', 'had'
-             'after', 'on', 'p', 'are', 'these', 'we', 'have', 'may',
-              'it', 'who', 'pm', 'am', 'patient', 's', 'aa', 'll', 're', 'date',
-              'as', 'o', 'wa', 'year']
-
-extra_stop_words = ['the','and','to','of','was','with','a','on','in','for','name',
-                    'is','patient','s','he','at','as','or','one','she','his','her','am',
-                   'were','you','pt','pm','by','be','had','your','this','date',
-                   'from','there','an','that','p','are','have','has','h','but','o',
-                   'namepattern','which','every','also']
-
-print('Creating stop words...')
+print('Creating stop words (NLTK & SKLEARN) ...')
 # 153 stop words from NLTK
 nltk_stop_words = stopwords.words('english')
 # Combine stop words from all the stop word lists
-# stop_words = ENGLISH_STOP_WORDS.union(my_stop_words).union(extra_stop_words).union(nltk_stop_words)
 stop_words = ENGLISH_STOP_WORDS.union(nltk_stop_words)
 
+ngram = 2
+min_df = 5
 # Using idf
-print('Converting text documents to numerical feature vectors.... aka vectorizing...')
-# tfidf_vec = TfidfVectorizer(tokenizer=tokenizer, norm='l2', ngram_range=(1, 4), sublinear_tf=True,
-#                             stop_words=stop_words)
-tfidf_vec = TfidfVectorizer(tokenizer=tokenizer, norm='l2', ngram_range=(1, 2), sublinear_tf=True,
-                            stop_words=stop_words)
-tfidf_vec.fit(train_df['Abstract'].values)
+print('[PorterStemmer] Converting text documents to numerical feature vectors.... aka vectorizing...')
+print('Ngrams = %i' % ngram)
+print('min_df = %i' % min_df)
+
+tfidf_vec = TfidfVectorizer(tokenizer=tokenizer, norm='l2', ngram_range=(1, ngram), sublinear_tf=True,
+                            min_df=min_df, stop_words=stop_words)
+
+# Fit the vectorizer on the combined train/test abstract data
+tfidf_vec.fit(abstract_df.values)
+# Transform training and test data set to numerical feature vectors
 X_train_tfidf = tfidf_vec.transform(train_df['Abstract'].values)
 X_test_tfidf = tfidf_vec.transform(test_df['Abstract'].values)
-
 Y_train = train_df['Label'].values
 
 """
 Distance Metrics.
 
-Compute the distance between two items (usually strings).
+Compute the distance between two instances.
 As metrics, they must satisfy the following three requirements:
 
 1. d(a, a) = 0
@@ -152,18 +135,6 @@ As metrics, they must satisfy the following three requirements:
 3. d(a, c) <= d(a, b) + d(b, c)
 """
 
-def jaccard_similarity(query, document):
-    intersection = set(query).intersection(set(document))
-    union = set(query).union(set(document))
-    return len(intersection)/len(union)
-
-def two_norm_sparse(x): 
-    '''Calculates the two norm of a sparse matrix'''
-#     two_norm = np.sqrt(x.multiply(x).sum(1))
-    two_norm = np.sqrt(x.multiply(x).sum(1))
-#     print(two_norm)
-    return two_norm
-    
 
 def cosine_similarity_sparse(s1, s2):
     '''Calculate cosine similiarity of two sparse matrices'''
@@ -182,62 +153,36 @@ def cosine_distance_sparse(s1, s2):
         one_array = np.ones((s2.shape[0], 1), dtype=float)
     return csr_matrix(one_array - cos_sim)
 
-def euclidean_distance_sparse(s1, s2):
-    '''Calcualte Euclidean distance of two sparse matrices'''
-    
-    i1 = s1.toarray()
-    i2 = s2.toarray()
-    d = csr_matrix(i1 - i2)
-    d = two_norm_sparse(d)
-#     d = np.sqrt(np.sum(np.power(i1 - i2, 2), axis=1, keepdims=True))
-    return csr_matrix(d)
 
-
-def classify_condition(train, labels, instance, K=5, metric = 'cosine'):
+def classify_condition(train, labels, instance, K):
     '''Using a distance metric to classify an instance'''
-    if metric == 'cosine':
-#         dots = cosine_similarity_sparse(instance, train)
-        dots = cosine_distance_sparse(train, instance)
-#         reverse = True
-    elif metric == 'euclidean':
-        dots = euclidean_distance_sparse(train, instance)
-#         dots = csr_matrix(euclidean_distances(train.toarray(), instance.toarray()))
-#         dots = csr_matrix(cdist(train.toarray(), instance.toarray(), 'euclidean'))
-#         reverse = False
-    # Edit below later on
-    elif metric == 'jaccard':
-        pass
-        # dots = csr_matrix(cdist(train.toarray(), instance.toarray(), 'jaccard'))
-    else:
-        dots = cosine_distance_sparse(train, instance)
-        
-        
-#     print(dots.indptr)
+    dots = cosine_distance_sparse(train, instance)
     neighbors = list(zip(dots.indptr, dots.data))
     if len(neighbors) == 0:
         # could not find any neighbors
         print('Could not find any neighbors.... Choosing a random one')
         return np.asscalar(np.random.randint(low=1, high=5, size=1))
-#     neighbors.sort(key=lambda x: x[1], reverse=False)
-    neighbors.sort(key=lambda x: x[1], reverse=False)        
-        
+    neighbors.sort(key=lambda x: x[1], reverse=False)
     tc = Counter(labels[s[0]] for s in neighbors[:K]).most_common(5)
-    if len(tc) < 5 or tc[0][1] > tc[1][1]:
+    if len(tc) == 1 or tc[0][1] > tc[1][1]:
         # majority vote
         return tc[0][0]
-    # tie break
-#     print('TIE BREAKER!!!!')
+        # tie break
+    # print(tc)
+    num_n = tc[0][1]
+    keep_labels = [l for l, c in tc if c == num_n]
+    # print(keep_labels)
     tc = defaultdict(float)
-     # Distance-Weighted Voting 
+    # Distance-Weighted Voting
     for s in neighbors[:K]:
-        tc[labels[s[0]]] += (1 / (s[1]**2))
-#     for s in neighbors[:K]:
-#         tc[labels[s[0]]] += s[1]
-#     print(tc)
+        if labels[s[0]] not in keep_labels:
+            continue
+        else:
+            tc[labels[s[0]]] += (1 / (s[1] ** 2))
     return sorted(tc.items(), key=lambda x: x[1], reverse=True)[0][0]
 
 
-def split_data(features, labels, fold_num = 1, fold=10):
+def split_data(features, labels, fold_num=1, fold=10):
     n = features.shape[0]
     fold_size = int(np.ceil(n*1.0/fold))
     feats = []
@@ -261,27 +206,10 @@ def calculate_accuracy(label, prediction):
         return (label == prediction).all().mean() * 100.0
     elif isinstance(label, list) and isinstance(prediction, list):
         assert len(label) == len(prediction)
-        return sum(1 for a,b in zip(label, prediction) if a == b) / len(label)
+        return sum(1 for a, b in zip(label, prediction) if a == b) / len(label)
     else:
         raise AttributeError('Both arguments have to be lists or numpy arrays')
-    
-def calculate_f1_score(label, prediction):
-    '''Takes two Python lists and produces an F1 score'''
-    label = set(label)
-    prediction = set(prediction)
-    # Calculate true positive, false positive & false negative
-    tp = len(label & prediction)
-    fp = len(prediction) - tp 
-    fn = len(label) - tp
 
-    # Calculate precision & recall
-    precision=float(tp)/(tp+fp)
-    recall=float(tp)/(tp+fn)
-
-    # Return F1 Score
-    return 2*((precision*recall)/(precision+recall))
-#     else:
-#         raise AttributeError('Both arguments have to be lists or numpy arrays')
 
 def calculate_weighted_f1_score(label, prediction):
     if isinstance(label, np.ndarray) or isinstance(prediction, np.ndarray):
@@ -291,7 +219,6 @@ def calculate_weighted_f1_score(label, prediction):
     f1_list = []
     label_dict = Counter(label)
     label_dict = sorted(label_dict.items(), key=lambda x: x[0])
-#     for l in set(label):
     for l, support in label_dict:
         tp = 0.
         fp = 0.
@@ -320,23 +247,19 @@ def calculate_weighted_f1_score(label, prediction):
     return sum(f1_list) / len(label)
 
 
-def evaluate_model(features, labels, metric='cosine', K=3, fold=10):
+def evaluate_model(features, labels, K=3, fold=10):
     '''Using KFold Cross Validation to evaluate model accuracy'''
-    
-    if metric not in ['cosine', 'euclidean', 'jaccard', 'hamming', 'mahalanobis']:
-        raise ValueError('Metric must be `cosine`, `euclidean`, or `jaccard`')
-    
+
     macc = 0.0
     cum_f1 = 0.0
     for f in range(fold):
         # split data into training and testing
         train_set, train_labels, test_set, test_labels = split_data(features, labels, f+1, fold)
         # predict the class of each test sample
-        predictions = np.array([classify_condition(train_set, train_labels, test_set[i,:], K=K, metric=metric) 
+        predictions = np.array([classify_condition(train_set, train_labels, test_set[i, :], K=K)
                        for i in range(test_set.shape[0])])
         acc = calculate_accuracy(test_labels, predictions)
-#         f1 = calculate_weighted_f1_score(test_labels, predictions)
-        f1 = f1_score(test_labels, predictions, average='weighted')
+        f1 = calculate_weighted_f1_score(test_labels, predictions)
 #         print('Fold-%i Accuracy: %.05f' % (f+1, acc))
         print('Fold-%i F1 Score: %.05f' % (f+1, f1))
         macc += acc
@@ -345,14 +268,43 @@ def evaluate_model(features, labels, metric='cosine', K=3, fold=10):
     return macc/float(fold), cum_f1/float(fold)
 
 
+def grid_search(features, labels, start, end, inc=1):
+    '''My Grid Search Function'''
+    best_f1 = 0.0
+    best_k = 0
+    best_acc = 0.0
+    for k in np.arange(start, end, inc):
+        acc, f1 = evaluate_model(features, labels, K=k, fold=10)
+#         print('For %i-NN, 10-Fold CV Average Accuracy: %.05f%%' % (k, acc * 100.0)) 
+        print('For %i-NN, 10-Fold CV Weighted F1 Score: %.05f' % (k, f1)) 
+        if f1 > best_f1:
+            best_f1 = f1
+            best_acc = acc
+            best_k = k
+    
+    print('Best Model Params: \n For %d-NN, 10-Fold CV Weighted F1 Score: %.08f' % (best_k, best_f1))
+    return best_k, best_acc, best_f1
+
+
 def predict_condition(X_train, Y_train, X_test, K):
-    predictions = np.array([classify_condition(X_train, Y_train, X_test[i, :], K=K, metric='cosine')
-                       for i in range(X_test.shape[0])])
+    predictions = np.array([classify_condition(X_train, Y_train, X_test[i, :], K=K)
+                            for i in range(X_test.shape[0])])
     return predictions
 
 
+# Find best hyperparameter K
+# K, best_acc, best_f1 = grid_search(X_train_tfidf, Y_train, 20, 60, 1)
+K = 43
+print('USING K = %i' % K)
+
+# Evaluate Model using k-folds cross validation
+# print('Evaluating model....')
+# a, f = evaluate_model(X_train_tfidf, Y_train, K=K, fold=10)
+# print('10 Fold CV F1 Score: %.05f' % f)
+
+# Run predictions & submit results
 print('Running final predictions now....')
-final_predictions = predict_condition(X_train_tfidf, Y_train, X_test_tfidf, K=51)
+final_predictions = predict_condition(X_train_tfidf, Y_train, X_test_tfidf, K=K)
 submission_df['Labels'] = final_predictions
 print('Writing out predictions now....')
 submission_df.to_csv('submission.txt', sep='\n', index=False, header=False)
