@@ -8,18 +8,18 @@ A data mining project to develop a predictive model (specifically a k-NN classif
 - No null values
 - No redundant rows
 - However, duplicate values in the `Abstract` feature
-    - Classified as different classes
+    - Same abstracts are classified as different classes
     - Around 6140 rows are duplicated
     - This could either mean that **certain abstracts belong to multiple classes** OR **mislabeled data**
-        - I think this is a **Multi-Label problem** and not due to duplicate data, since many diseases/conditions can belong in multiple categories.
+        - This maybe a **Multi-Label problem** and not due to duplicate data, since many diseases/conditions can belong in multiple categories.
           - Many text classification problems are multi label, such as categorizing articles online, different scenes in a picture, etc.
 
-- **My initial guess of classes:**
+- Using data visualizations & tf-idf scores (see [EDA notebook](https://github.com/k-chuang/medical-text-classification/blob/master/notebooks/exploratory-data-analysis.ipynb) for more details), my initial estimate is that the labels are:
   - 1 : neoplasms
     - a new and abnormal growth of tissue in some part of the body, especially as a characteristic of cancer.
     - e.g. cancer, skin moles, Uterine fibroids
   - 2 : digestive system diseases
-    - The digestive system is a group of organs working together to convert food into energy and basic nutrients to feed the entire body.
+    - the digestive system is a group of organs working together to convert food into energy and basic nutrients to feed the entire body.
     - e.g. acid reflux, Bowel Control Problems, Appendicitis.
   - 3 : nervous system diseases
     - the network of nerve cells and fibers that transmits nerve impulses between parts of the body.
@@ -30,29 +30,44 @@ A data mining project to develop a predictive model (specifically a k-NN classif
 
   - 5 : General Pathological diseases
     - Abnormal anatomical or physiological conditions and objective or subjective manifestations of disease, not classified as disease or syndrome.
-    - e.g. can include any of the above, as well ass new diseases/conditions
-
-## Data Preprocessing
-- Aggregated the labels for rows with duplicate `Abstract` features
-  - Reduced 14,438 instances to 11,227 instances
+    - e.g. can include any of the above, as well as new diseases/conditions
 
 ## Feature Engineering
-- Undersampling the majority class (Label 5)
-  - Since there are multiple labels for the same abstract, let's drop duplicated abstracts with the label == 5
-  - Reasoning: it is over represented in training data already
-    - It is also the label with the most duplicated abstracts
-  - This is a way to handle imbalanced classes, by **undersampling** the majority class
-  - With undersampling the majority class, 10 Fold CV F1 Score increased ~10%
-- Tokenizer & Vectorizer
-  - Experimented with different tokenizers: `WordNetLemmatizer`, `word_tokenizer`, `PorterStemmer`, `SnowballStemmer`, `LancasterStemmer`
-    - Lemmatizer does things properly with use of vocabulary and morphological analysis of words
-      - to produce a lemma, which is the base word & its inflections
-    - Stemmers are more aggressive algorithms that chop off the ends of words
-      - Porter -> SnowBall -> Lancaster
-        - From least aggressive to most aggressive
+- **Bag of Words** approach for processing Text
+  - BOW approach breaks up the documents into individual words and their counts within the corpus
+- Tokenizer
+  - Tokenize all the documents (medical abstracts)
+    - Tokenization involves removing punctuation & numbers, lowercasing all words, and stemming/lemmatizing the words.
+    - Experimented with different tokenizers: `WordNetLemmatizer`, `word_tokenizer`, `PorterStemmer`, `SnowballStemmer`, `LancasterStemmer`
+      - Lemmatizer does things properly with use of vocabulary and morphological analysis of words
+        - to produce a lemma, which is the base word & its inflections
+      - Stemmers are more aggressive algorithms that chop off the ends of words
+        -  Porter -> SnowBall -> Lancaster
+          - From least aggressive to most aggressive
+        - `PorterStemmer` produces the best results'
+- Vectorizer
+  - Vectorize documents (i.e. convert the documents to normalized sparse feature vectors)
+  - `TfidfVectorizer` from sklearn was used to vectorize the documents
+    - Term frequency inverse document frequency
+      - Highlight words that are more interesting, such as words in a single document rather than the whole corpus of documents
+    - Will normalize (Euclidean / L2 norm) and weight with diminishing importance words that occur in the majority of samples / documents, producing a CSR sparse matrix.
+- N-grams
+  - medical abstracts contain a lot of multi-word expressions (e.g. *left anterior descending coronary artery*)
+  - N-grams (with n > 1) will keep local positioning of important words
+- Stop Words
+  - Removed unimportant stop words such as *the* or *and*
+  - Utilized `nltk` and `sklearn` corpus of stop words
+
 
 
 ## Model
-- MLkNN builds uses k-NearestNeighbors find nearest examples to a test class and uses Bayesian inference
-    to select assigned labels.
-    - It finds the k nearest examples to the test instance and considers those that are labeled at least with :math:`l` as positive and the rest as negative.  What mainly differentiates this method from other binary relevance (BR) methods is the use of prior probabilities. ML-kNN can also rank labels.
+- Implemented a simple **k-nearest neighbor** algorithm from scratch with the following features:
+  - Cosine distance metric
+  - Majority voting to determine the class label of an instance
+  - If there is a tie, I use the instances of the class labels that tied, and calculate the inverse squared distance score of those instances to determine the final prediction label.
+    - A higher inverse squared distance score correlates with a higher similarity (inverse distance squared is proportional to similarity).
+
+## Rank & F1 Score
+My rank on the CLP public leaderboard is **2nd**, with a F1 score of **0.7858**. I will update this when the private leaderboard comes out.
+
+*Note: This assignment followed a similar format with kaggle competitions, except this was a class competition for the SJSU CMPE 255 Data Mining course (Fall 2018).*
