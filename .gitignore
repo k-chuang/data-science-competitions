@@ -1,4 +1,10 @@
-# Mac OS
+# My files & folders
+tests/
+results.rtf
+Turn it in/
+submissions/
+
+# Mac
 .DS_Store
 
 # Byte-compiled / optimized / DLL files
