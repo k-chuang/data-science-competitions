@@ -68,6 +68,8 @@ A data mining project to develop a predictive model (specifically a k-NN classif
     - A higher inverse squared distance score correlates with a higher similarity (inverse distance squared is proportional to similarity).
 
 ## Rank & F1 Score
-My rank on the CLP public leaderboard is **2nd**, with a F1 score of **0.7858**. I will update this when the private leaderboard comes out.
+My rank on the CLP public leaderboard is **2nd**, with a F1 score of **0.7858**. This score is calculated on 50% of the test set.
 
-*Note: This assignment followed a similar format with kaggle competitions, except this was a class competition for the SJSU CMPE 255 Data Mining course (Fall 2018).*
+**Update**: My final rank on the CLP final leaderboard is **5th** with a F1 score of **0.7815**. This score is calculated on the entirety of the test set.
+
+*Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring, except this was specifically a class competition for the SJSU CMPE 255 Data Mining course (Fall 2018).*
