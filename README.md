@@ -2,6 +2,7 @@
 A data mining project that develops a predictive model that can determine, given images of traffic depicting different objects, which class (out of 11 total classes) it belongs to. The object classes are: car, suv, small_truck, medium_truck, large_truck, pedestrian, bus, van, people, bicycle, and motorcycle.
 
 ## Exploratory Data Analysis (EDA)
+- Features already extracted from images
 - Features include:
   - **512 Histogram of Oriented Gradients (HOG) features**
       - HOG counts occurrences of gradient orientation in localized portions of an image
@@ -15,7 +16,7 @@ A data mining project that develops a predictive model that can determine, given
       - Color gradient measures gradual change/blend of color within an image
   - **7 Depth of Field (DF) features**
       - Depth of Field is the distance about the plane of focus (POF) where objects appear acceptably sharp in an image
-      
+
 - Classes are imbalanced
   - 0 instances of human images
   - 3 instances of bicycle images
@@ -25,6 +26,7 @@ A data mining project that develops a predictive model that can determine, given
 
 - PCA (Unsupervised feature extraction)
     - Identify the combination of attributes (principal components) that account for the most variance in the data.
+    - 95% kept variance = 14 components
     - 99% kept variance = 22 components
     - 100% kept variance = 34 components
 - LDA (Supervised feature extraction)
@@ -37,6 +39,9 @@ A data mining project that develops a predictive model that can determine, given
         - remove the features that have the same value in all samples.
 - Tree-based feature selection
     - Use a meta-estimator to determine/learn feature importances, and use for feature selection
+- L1-based feature selection (Lasso Regularization)
+    - Linear models penalized with the L1 norm have sparse solutions: many of their estimated coefficients are zero.
+    - For SVMs, parameter C controls the sparsity: the smaller C the fewer features selected.
 - More to be added...
 
 ## Model Selection
