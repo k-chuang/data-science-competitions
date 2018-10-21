@@ -38,9 +38,9 @@ from scipy.sparse import csr_matrix
 import scipy.sparse as sp
 
 # Load data
-train_df = pd.read_csv('train.dat', sep='\t', header=None, names=['Label', 'Abstract'])
-test_df = pd.read_csv('test.dat', sep='\t', header=None, names=['Abstract'])
-submission_df = pd.read_csv('format.dat', header=None, names=['Labels'])
+train_df = pd.read_csv('data/train.dat', sep='\t', header=None, names=['Label', 'Abstract'])
+test_df = pd.read_csv('data/test.dat', sep='\t', header=None, names=['Abstract'])
+submission_df = pd.read_csv('data/format.dat', header=None, names=['Labels'])
 
 # Combine train and test abstracts
 print('COMBINING TRAINING SET & TEST SET FOR FEATURE EXTRACTION....')
