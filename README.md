@@ -1,8 +1,9 @@
 # Data Science Competitions
-This repository contains three data science competitions from a data mining graduate course at SJSU.
+This repository contains three data science competitions from a data mining graduate course.
 
-# [Medical Text Classification]()
-To be added...
+## [Medical Text Classification]()
+Add description, dataset info, and rank
 
-# [Traffic Image Classification]()
-To be added...
+
+## [Traffic Image Classification]()
+Add description, dataset info, and rank
