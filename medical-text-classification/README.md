@@ -2,7 +2,6 @@
 
 A data mining project to develop a predictive model (specifically a k-NN classifier) that can determine, given a medical abstract, which of 5 classes (medical conditions) it falls in. The 5 classes are diseases: **digestive system diseases**, **cardiovascular diseases**, **neoplasms**, **nervous system diseases**, and **general pathological conditions**
 
-**Note:** This is a graduate assignment for CMPE 255 Data Mining course at SJSU (under Professor David Anastasiu).
 
 ## Data Exploration ([notebook](https://github.com/k-chuang/medical-text-classification/blob/master/notebooks/exploratory-data-analysis.ipynb))
 - No null values
@@ -72,4 +71,4 @@ My rank on the CLP public leaderboard is **2nd**, with a F1 score of **0.7858**.
 
 **Update**: My final rank on the CLP final leaderboard is **5th** with a F1 score of **0.7815**. This score is calculated on the entirety of the test set.
 
-*Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring, except this was specifically a class competition for the SJSU CMPE 255 Data Mining course (Fall 2018).*
+*Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring.*
