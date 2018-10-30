@@ -61,7 +61,8 @@ A data mining project that develops a predictive model that can determine, given
 ## Rank & F1 Score
 My rank on the CLP public leaderboard is 1st, with a F1 score of 0.8598. This score is calculated on 50% of the test set.
 
-![alt text](images/public_leaderboard.png)
+<img src="https://github.com/k-chuang/traffic-image-classification/blob/master/images/public_leaderboard.png" width="48">
+
 
 **Update**: To be added...
 
