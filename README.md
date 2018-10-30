@@ -16,40 +16,54 @@ A data mining project that develops a predictive model that can determine, given
       - Color gradient measures gradual change/blend of color within an image
   - **7 Depth of Field (DF) features**
       - Depth of Field is the distance about the plane of focus (POF) where objects appear acceptably sharp in an image
-
 - Classes are imbalanced
   - 0 instances of human images
   - 3 instances of bicycle images
   - 10,375 instances of car images
 
-## Feature Selection
+## Handling Class Imbalance
+- Utilizing ML algorithms that can handle class imbalance by "balancing" the classes using weights
+  - Weight minority classes higher than majority classes (using `class_weight` param)
+  - Weighting is based on the class labels and is inversely proportional to the class frequencies in the input data
 
-- PCA (Unsupervised feature extraction)
-    - Identify the combination of attributes (principal components) that account for the most variance in the data.
-    - 95% kept variance = 14 components
-    - 99% kept variance = 22 components
-    - 100% kept variance = 34 components
-- LDA (Supervised feature extraction)
-    - Identify attributes that account for the most variance between classes
-    - 100% kept variance = 9 components
-- Locally Linear Embedding (Non-linear dimensionality reduction)
-    - Uses PCA so using 34 components
-- Removing Features with low variance `VarianceThreshold`
-    - Throw away features with 0 variance
-        - remove the features that have the same value in all samples.
-- Tree-based feature selection
-    - Use a meta-estimator to determine/learn feature importances, and use for feature selection
-- L1-based feature selection (Lasso Regularization)
-    - Linear models penalized with the L1 norm have sparse solutions: many of their estimated coefficients are zero.
-    - For SVMs, parameter C controls the sparsity: the smaller C the fewer features selected.
-- More to be added...
 
-## Model Selection
-- Use 5-Fold CV to determine performance of each model
-- Models:
+## Data Preprocessing + Feature Selection
+- `StandardScaler` to standardize the features (remove mean and scale to unit variance)
+- Experiments with different feature selectors
+- Measure performance of feature selection through cross validation of different models
+  - PCA (Unsupervised feature selection)
+      - Identify the combination of attributes (principal components) that account for the most variance in the data.
+      - 95% kept variance = 14 components
+      - 99% kept variance = 22 components
+      - 100% kept variance = 34 components
+  - LDA (Supervised feature extraction)
+      - Identify attributes that account for the most variance between classes
+      - 100% kept variance = 9 components
+      - Did not perform well because of assumption that classes are normally distributed and have equal class covariance
+  - Locally Linear Embedding (Non-linear dimensionality reduction)
+      - Uses PCA so using 34 components
+  - Removing features with low variance `VarianceThreshold`
+      - Throw away features with 0 variance
+          - remove the features that have the same value in all samples.
+- **Winner is `VarianceThreshold`**
+
+## Model Selection & Tuning
+- Use 5-Fold CV + **Bayesian Optimization** to individually tune each chosen model to to their own optimal hyperparameters
+- **Bayesian Optimization** tries to approximate or fit a Gaussian process (a regression model known as a surrogate model) on function/model evaluations in order to propose sampling points in the search space of a model's hyperparameters using acquisition functions. Essentially, it is a smarter grid search, and empirically, it has been proven to be more efficient than a grid search and more effective than a random search.
+- Models used in a `VotingClassifier` with **soft** voting:
   - Support Vector Machine (Gaussian RBF kernel)
-  - K-nearest neighbors
   - Ensemble Methods:
     - Random Forest
-    - Light Gradient Boosting
-    - Voting Classifier
+    - Light Gradient Boosting (LightGBM)
+    - Extra Trees Classifier
+- Model is evaluated using the validation set
+
+## Rank & F1 Score
+My rank on the CLP public leaderboard is 1st, with a F1 score of 0.8598. This score is calculated on 50% of the test set.
+
+![alt text](images/public_leaderboard.png)
+
+**Update**: To be added...
+
+
+*Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring.*
