@@ -56,12 +56,14 @@ A data mining project that develops a predictive model that can determine, given
     - Random Forest
     - Light Gradient Boosting (LightGBM)
     - Extra Trees Classifier
+- `VotingClassifier` is then tuned using `GridSearch` + 5-Fold CV with different weights for each model
+  - Optimal weights are determined to be each model with uniform weight (weight = 1)
 - Model is evaluated using the validation set
 
 ## Rank & F1 Score
-My rank on the CLP public leaderboard is 1st, with a F1 score of 0.8598. This score is calculated on 50% of the test set.
+My rank on the CLP public leaderboard is **1st**, with a F1 score of **0.8598**. This score is calculated on 50% of the test set.
 
-<img src="https://github.com/k-chuang/traffic-image-classification/blob/master/images/public_leaderboard.png" width="50%" height="50%">
+<img src="images/public_leaderboard.png" width="50%" height="50%">
 
 
 **Update**: To be added...
