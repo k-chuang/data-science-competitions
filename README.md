@@ -66,7 +66,9 @@ My rank on the CLP public leaderboard is **1st**, with a F1 score of **0.8598**.
 <img src="images/public_leaderboard.png" width="50%" height="50%">
 
 
-**Update**: To be added...
+**Update**:
+My rank on the CLP final leaderboard is **2nd** with a F1 score of **0.8508**, calculated on the whole test set.
+<img src="images/final_leaderboard.png" width="50%" height="50%">
 
 
 *Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring.*
