@@ -1,0 +1,3 @@
+# Text Clustering with DBSCAN
+
+For this project, I implemented the **DBSCAN** (Density-based spatial clustering of applications with noise) clustering algorithm from scratch to cluster text data (news records). DBSCAN is an unsupervised clustering algorithm that is density-based, meaning the algorithm will group together points that are closely packed together, and mark points in low-densities as outliers. The input data consists of 8580 text records in document-term sparse matrix (CSR) format with no labels provided. For evaluation purposes (leaderboard ranking), the Normalized Mutual Information Score (NMI), an external index metric for evaluating clustering solutions, will be the metric used for scoring the clustering algorithm.
