@@ -1,5 +1,5 @@
 # Data Science Competitions
-This repository contains three data science competitions from a data mining graduate course. The competitions are separated into folders, and are discussed more in detail below.
+This repository contains three data science competitions from a data mining graduate course. The competitions (2 supervised learning, 1 unsupervised learning) are separated into folders, and are discussed more in detail below.
 
 *Note: These competitions follow a similar format with kaggle competitions in terms of ranking & scoring. The public leaderboard ranking is evaluated on 50% of the test set, and the final leaderboard ranking is evaluated on the whole test set.*
 
@@ -38,6 +38,6 @@ Develop the DBSCAN clustering algorithm (unsupervised learning) from scratch to 
 **Training dataset**: ~8,600 news articles in document-term sparse matrix format (word index, word frequency)
 
 ### Rank & NMI Score
-**Public Leaderboard Rank:** 2/45 with a NMI score of 0.8598
+**Public Leaderboard Rank:** 2/45 with a NMI score of 0.6238
 
-**Final Leaderboard Rank:**
+**Final Leaderboard Rank:** 3/45 with a NMI score of 0.6249
