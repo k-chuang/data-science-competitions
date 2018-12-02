@@ -69,6 +69,7 @@ A data mining project to develop a predictive model (specifically a k-NN classif
 ## Rank & F1 Score
 My rank on the CLP public leaderboard is **2nd**, with a F1 score of **0.7858**. This score is calculated on 50% of the test set.
 
-**Update**: My final rank on the final leaderboard is **5th** with a F1 score of **0.7815**. This score is calculated on the entirety of the test set.
+**Update:**
+My final rank on the final leaderboard is **5th** with a F1 score of **0.7815**. This score is calculated on the entirety of the test set.
 
 *Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring.*

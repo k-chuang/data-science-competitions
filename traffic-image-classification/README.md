@@ -63,12 +63,8 @@ A data mining project that develops a predictive model that can determine, given
 ## Rank & F1 Score
 My rank on the CLP public leaderboard is **1st**, with a F1 score of **0.8598**. This score is calculated on 50% of the test set.
 
-<img src="images/public_leaderboard.png" width="50%" height="50%">
-
-
 **Update**:
-My rank on the CLP final leaderboard is **2nd** with a F1 score of **0.8508**, calculated on the whole test set.
-<img src="images/final_leaderboard.png" width="50%" height="50%">
+My rank on the CLP final leaderboard is **2nd** with a F1 score of **0.8508**. This score is calculated on the whole test set.
 
 
 *Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring.*

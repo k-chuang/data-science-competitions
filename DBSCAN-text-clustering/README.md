@@ -5,9 +5,8 @@ For this project, I implemented the **DBSCAN** (Density-based spatial clustering
 ## Rank & NMI
 My current rank on CLP public leaderboard is **2nd** with a NMI (normalized mutual information) score of **0.6238**.
 
-NMI is an external metric (meaning it needs labels or external information) for evaluating different clusterings.  It has a score between 0 (no mutual information) and 1 (perfect correlation).
-
-**Update:** My rank on the CLP final leaderboard is **3rd** with a NMI score of **0.6249**, calculated on the whole test set.
+**Update:**
+My rank on the CLP final leaderboard is **3rd** with a NMI score of **0.6249**. This score is calculated on the whole test set.
 
 *Note: This assignment follows a similar format with kaggle competitions in terms of ranking & scoring.*
 
