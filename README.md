@@ -5,7 +5,7 @@ Recommender systems seek to predict a rating or preference a user will give cert
 Currently, my rank on the Kaggle competition public leaderboard is **1st** with a RMSE of **1.50613** on 30% of the test set. The final leaderboard will be based on the other 70% of the test set.
 
 ## Exploratory Data Analysis
-The training set contains 700,000 instances with three columns (user ID, book ID, and rating). The test set contains 300,000 instances with two columns (user ID, book ID). Ratings range from 0 to 5 inclusive. Additional book metadata is provided with information about each books’ author, average rating, description, number of pages, etc. For more details, see the [goodreads_eda.ipynb](https://github.com/k-chuang/goodreads-recommender-system/blob/master/goodreads_eda.ipynb) notebook.
+The training set contains 700,000 instances with three columns (user ID, book ID, and rating). The test set contains 300,000 instances with two columns (user ID, book ID). Ratings range from 0 to 5 inclusive. Additional book metadata is provided with information about each books’ author, average rating, description, number of pages, etc. For more details, see the [goodreads_eda.ipynb](goodreads_eda.ipynb) notebook.
 
 ## Experimental Results
 Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `Test RMSE` column contains the RMSE on the holdout set (20% of the training dataset). The `Kaggle Submission RMSE` column is the RMSE score for 30% of the test data.
@@ -20,3 +20,6 @@ Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `T
 | KNNWithMeans      | 1.6841         | 1.6560    |     -      |
 | KNNWithZScore     | 1.6832         | 1.6580    |     -      |
 | SVD + KNNBaseline | **1.5462**         | **1.5268**    | **1.50613**    |
+
+## Report
+For more detailed information, see the [report.pdf](report.pdf)
