@@ -5,4 +5,18 @@ Recommender systems seek to predict a rating or preference a user will give cert
 Currently, my rank on the Kaggle competition public leaderboard is **1st** with a RMSE of **1.50613** on 30% of the test set. The final leaderboard will be based on the other 70% of the test set.
 
 ## Exploratory Data Analysis
-The training set contains 700,000 instances with three columns (user ID, book ID, and rating). The test set contains 300,000 instances with two columns (user ID, book ID). Additional book metadata is provided with information about each books’ author, average rating, description, number of pages, etc. A majority of the exploratory data analysis is done on the training set with some analysis done on the additional book metadata. For the training set, there are 35,280 unique users and 68,371 unique books. The ratings lie within the range of 0 to 5 inclusive with a majority of the ratings being 0, 4 or 5 and the minority of the ratings being 1 or 2. The minimum number of ratings per user and the minimum number of ratings per book were both 1. Also, there were 25,851 books out of the 68,371 books that were only rated by 1 user. The majority of the number of ratings per book was very low and was in the 1 to 5 range. The majority of the number of ratings per user was also very low and was in the 1 to 16 range. An important observation of the training set was that there was duplicated data for some of the user and book pairs. For more details, see the [goodreads_eda.ipynb](https://github.com/k-chuang/goodreads-recommender-system/blob/master/goodreads_eda.ipynb) notebook.
+The training set contains 700,000 instances with three columns (user ID, book ID, and rating). The test set contains 300,000 instances with two columns (user ID, book ID). Ratings range from 0 to 5 inclusive. Additional book metadata is provided with information about each books’ author, average rating, description, number of pages, etc. For more details, see the [goodreads_eda.ipynb](https://github.com/k-chuang/goodreads-recommender-system/blob/master/goodreads_eda.ipynb) notebook.
+
+## Experimental Results
+Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `Test RMSE` column contains the RMSE on the holdout set (20% of the training dataset). The `Kaggle Submission RMSE` column is the RMSE score for 30% of the test data.
+
+| Model             | 5-Fold CV RMSE | Test RMSE | Kaggle Submission RMSE|
+|-------------------|:----------------:|:-----------:|:------------:|
+| SVD               | 1.5589         | 1.5413    | 1.52183    |
+| SVD++             | 1.6272         | 1.6187    |     -      |
+| NMF               | 1.5925         | 1.5851    |     -      |
+| PMF               | 1.7003         | 1.6660    |     -      |
+| KNNBaseline       | 1.6153         | 1.5829    |     -      |
+| KNNWithMeans      | 1.6841         | 1.6560    |     -      |
+| KNNWithZScore     | 1.6832         | 1.6580    |     -      |
+| SVD + KNNBaseline | **1.5462**         | **1.5268**    | **1.50613**    |
