@@ -21,5 +21,14 @@ Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `T
 | KNNWithZScore     | 1.6832         | 1.6580    |     -      |
 | SVD + KNNBaseline | **1.5462**         | **1.5268**    | **1.50613**    |
 
+## Notebook and Code
+- Exploratory Data Analysis: [goodreads_eda.ipynb](goodreads_eda.ipynb)
+- GridSearch tuning of KNN Baseline: [gridsearch_knn_baseline.py](gridsearch_knn_baseline.py)
+- Bayesian optimization tuning of SVD: [gp_minimize_svd.py](gp_minimize_svd.py)
+- Weight tuning of ensemble hybrid recommender system: [ensemble_tune.py](ensemble_tune.py)
+- Kaggle submission script: [submit.py](submit.py)
+- Optimal weights JSON file: [optimal_weights.json](optimal_weights.json)
+- Sample bash script for batch jobs on HPC: [sample_sbatch.sh](sample_sbatch.sh)
+
 ## Report
 For more detailed information, see the [report.pdf](report.pdf)
