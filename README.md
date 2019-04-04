@@ -5,7 +5,7 @@ Recommender systems seek to predict a rating or preference a user will give cert
 Currently, my rank on the Kaggle competition public leaderboard is **1st** with a RMSE of **1.50613** on 30% of the test set. The final leaderboard will be based on the other 70% of the test set.
 
 ## Exploratory Data Analysis
-The training set contains 700,000 instances with three columns (user ID, book ID, and rating). The test set contains 300,000 instances with two columns (user ID, book ID). Ratings range from 0 to 5 inclusive. Additional book metadata is provided with information about each books’ author, average rating, description, number of pages, etc. For more details, see the [goodreads_eda.ipynb](goodreads_eda.ipynb) notebook.
+The training set contains 700,000 instances with three columns (user ID, book ID, and rating). The test set contains 300,000 instances with two columns (user ID, book ID). Ratings range from 0 to 5 inclusive. Additional book metadata is provided with information about each books’ author, average rating, description, number of pages, etc. For more details, see the [goodreads_eda.ipynb](src/goodreads_eda.ipynb) notebook.
 
 ## Experimental Results
 Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `Test RMSE` column contains the RMSE on the holdout set (20% of the training dataset). The `Kaggle Submission RMSE` column is the RMSE score for 30% of the test data.
@@ -22,13 +22,13 @@ Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `T
 | SVD + KNNBaseline | **1.5462**         | **1.5268**    | **1.50613**    |
 
 ## Notebook and Code
-- Exploratory Data Analysis: [goodreads_eda.ipynb](goodreads_eda.ipynb)
-- GridSearch tuning of KNN Baseline: [gridsearch_knn_baseline.py](gridsearch_knn_baseline.py)
-- Bayesian optimization tuning of SVD: [gp_minimize_svd.py](gp_minimize_svd.py)
-- Weight tuning of ensemble hybrid recommender system: [ensemble_tune.py](ensemble_tune.py)
-- Kaggle submission script: [submit.py](submit.py)
-- Optimal weights JSON file: [optimal_weights.json](optimal_weights.json)
-- Sample bash script for batch jobs on HPC: [sample_sbatch.sh](sample_sbatch.sh)
+- Exploratory Data Analysis: [goodreads_eda.ipynb](src/goodreads_eda.ipynb)
+- GridSearch tuning of KNN Baseline: [gridsearch_knn_baseline.py](src/gridsearch_knn_baseline.py)
+- Bayesian optimization tuning of SVD: [gp_minimize_svd.py](src/gp_minimize_svd.py)
+- Weight tuning of ensemble hybrid recommender system: [ensemble_tune.py](src/ensemble_tune.py)
+- Kaggle submission script: [submit.py](src/submit.py)
+- Optimal weights JSON file: [optimal_weights.json](src/optimal_weights.json)
+- Sample bash script for batch jobs on HPC: [sample_sbatch.sh](src/sample_sbatch.sh)
 
 ## Report
 For more detailed information, see the [report.pdf](report.pdf)
