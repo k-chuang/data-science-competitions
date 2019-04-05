@@ -1,5 +1,8 @@
 # Book Recommender System Kaggle Competition
-Recommender systems seek to predict a rating or preference a user will give certain items, such as a movies, books, songs, and products in general. Content-based filtering and collaborative filtering are two examples of recommender system algorithms that seek to provide users with meaningful recommendations based on their predicted ratings for unknown items. The objective of this Kaggle competition assignment is to develop a recommender system for a medium-sized dataset that will accurately predict the rating that a user will give to a book given past their past ratings, and ultimately provide recommendations of books to a user based on their predicted ratings. The accuracy of the predicted ratings is determined by the root mean squared error (RMSE) to determine how close or far off a predicted rating is from the actual rating.
+Recommender systems seek to predict a rating or preference a user will give certain items, such as a movies, books, songs, and products in general. Content-based filtering and collaborative filtering are two examples of recommender system algorithms that seek to provide users with meaningful recommendations based on their predicted ratings for unknown items.
+Collaborating filtering focuses on where past transactions are analyzed in order to establish connections between users and products. The two more successful approaches to CF are latent factor models, which directly profile both users and products, and neighborhood models, which analyze similarities between products or users.
+
+The objective of this Kaggle competition assignment is to develop a recommender system for a medium-sized dataset that will accurately predict the rating that a user will give to a book given past their past ratings, and ultimately provide recommendations of books to a user based on their predicted ratings. The accuracy of the predicted ratings is determined by the root mean squared error (RMSE) to determine how close or far off a predicted rating is from the actual rating.
 
 ## Kaggle Rank & RMSE
 Currently, my rank on the Kaggle competition public leaderboard is **1st** with a RMSE of **1.50613** on 30% of the test set. The final leaderboard will be based on the other 70% of the test set.
@@ -21,7 +24,7 @@ Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `T
 | KNNWithZScore     | 1.6832         | 1.6580    |     -      |
 | SVD + KNNBaseline | **1.5462**         | **1.5268**    | **1.50613**    |
 
-## Notebook and Code
+## Notebooks and Code
 - Exploratory Data Analysis: [goodreads_eda.ipynb](src/goodreads_eda.ipynb)
 - GridSearch tuning of KNN Baseline: [gridsearch_knn_baseline.py](src/gridsearch_knn_baseline.py)
 - Bayesian optimization tuning of SVD: [gp_minimize_svd.py](src/gp_minimize_svd.py)
@@ -31,4 +34,4 @@ Best hyperparameters from tuning are used in the `5-Fold CV RMSE` column. The `T
 - Sample bash script for batch jobs on HPC: [sample_sbatch.sh](src/sample_sbatch.sh)
 
 ## Report
-For more detailed information, see the [report.pdf](report.pdf)
+For more detailed information, see the [report.pdf](report/report.pdf)

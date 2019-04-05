@@ -1,0 +1,22 @@
+{
+  "svd_best_params": {
+    "n_factors": 508,
+    "n_epochs": 91,
+    "lr_bu": 0.0073536723539078235,
+    "lr_bi": 0.0005,
+    "lr_pu": 0.0024820722256145176,
+    "lr_qi": 0.06624688566734455,
+    "reg_bu": 0.019451899760969844,
+    "reg_bi": 0.0020000000000000005,
+    "reg_pu": 4.326206154666854,
+    "reg_qi": 0.014620310746036145
+  },
+  "knn_baseline_best_params": {
+    "k": 40,
+    "sim_options": {
+      "min_support": 1,
+      "name": "pearson_baseline",
+      "user_based": false
+    }
+  }
+}

@@ -1,6 +1,11 @@
 # Mac OS
 .DS_Store
 
+# Some archive files
+archive/
+model/
+submissions/
+
 # Datasets
 data/
 
