@@ -1,10 +1,11 @@
 # Mac OS
 .DS_Store
 
-# Some archive files
+# Some extra folders and files not needed
 archive/
 model/
 submissions/
+*.docx
 
 # Datasets
 data/
