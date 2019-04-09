@@ -9,7 +9,7 @@ My rank on the Kaggle competition public leaderboard is **1st** with a RMSE of *
 
 **Update**: My rank on the Kaggle competition private leaderboard is **1st** with a RMSE of **1.51056** on all of the test set.
 
-[](images/Kaggle_private_leaderboard.png)
+![](images/Kaggle_private_leaderboard.png)
 
 ## Exploratory Data Analysis
 The training set contains 700,000 instances with three columns (user ID, book ID, and rating). The test set contains 300,000 instances with two columns (user ID, book ID). Ratings range from 0 to 5 inclusive. Additional book metadata is provided with information about each books’ author, average rating, description, number of pages, etc. For more details, see the [goodreads_eda.ipynb](src/goodreads_eda.ipynb) notebook.
