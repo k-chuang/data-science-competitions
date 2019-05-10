@@ -66,6 +66,7 @@ Develop a recommender system for books based on user ratings on books
 
 ### Dataset
 **Training dataset**: 700,000 ratings (user_id, book_id, rating)
+
 **Test dataset**: 300,000 ratings
 
 ### Rank & RMSE score
